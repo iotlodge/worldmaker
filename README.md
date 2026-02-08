@@ -34,6 +34,61 @@ WorldMaker closes that gap by generating realistic synthetic ecosystems that mir
 
 ---
 
+## Screenshots
+
+> All views support **Light** and **Dark** themes. Screenshots below auto-switch based on your GitHub theme setting.
+
+### Dashboard
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/dashboard-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/screenshots/dashboard-light.png">
+  <img alt="Dashboard — entity counts, distribution charts, health scoring, critical issue alerts" src="docs/screenshots/dashboard-light.png" width="100%">
+</picture>
+
+### Risk Surface
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/risk-surface-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/screenshots/risk-surface-light.png">
+  <img alt="Risk Surface — dual-panel Product→Features (consumer risk) vs Platform→Capabilities (infrastructure risk)" src="docs/screenshots/risk-surface-light.png" width="100%">
+</picture>
+
+### Trace Explorer (OTel-Native Observability)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/trace-detail-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/screenshots/trace-detail-light.png">
+  <img alt="Trace Detail — span waterfall with service timing, span attributes, OTel metadata" src="docs/screenshots/trace-detail-light.png" width="100%">
+</picture>
+
+### Issue Discovery
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/issues-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/screenshots/issues-light.png">
+  <img alt="Issue Discovery — consolidated findings: circular dependencies, critical issues, warnings" src="docs/screenshots/issues-light.png" width="100%">
+</picture>
+
+### Dependencies & Blast Radius
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/dependencies-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/screenshots/dependencies-light.png">
+  <img alt="Dependencies — dependency graph with blast radius analysis and failure simulation" src="docs/screenshots/dependencies-light.png" width="100%">
+</picture>
+
+### Services
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/services-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/screenshots/services-light.png">
+  <img alt="Services — service catalog with dependency depth, blast radius, microservice decomposition" src="docs/screenshots/services-light.png" width="100%">
+</picture>
+
+### API Reference
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/api-reference-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/screenshots/api-reference-light.png">
+  <img alt="API Reference — 41 endpoints across 12 domains with full documentation" src="docs/screenshots/api-reference-light.png" width="100%">
+</picture>
+
+---
+
 ## Features
 
 ### Ecosystem Generation
