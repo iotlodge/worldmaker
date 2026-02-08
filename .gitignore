@@ -1,0 +1,70 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Virtual environments (uv creates .venv by default)
+.venv/
+
+# Build related files
+PHASE*.md
+SESSION*.md
+.claude/
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# Type checking
+.mypy_cache/
+
+# Linting
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Generated data
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+ecosystem_*.json
+sample_ecosystem.json
+
+# Logs
+logs/
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# Session artifacts
+SESSION_STATE.md
+PHASE_B_PLAN.md
+FRONTEND_TYPES.ts
+
+# Docker
+docker-compose.override.yml
