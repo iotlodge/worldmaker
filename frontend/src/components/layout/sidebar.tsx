@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Server,
+  Container,
   GitBranch,
   Workflow,
   Activity,
@@ -15,6 +16,7 @@ import {
   ShieldAlert,
   AlertOctagon,
   BookOpen,
+  Building2,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -41,6 +43,17 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
     ],
   },
   {
+    title: "Enterprise",
+    items: [
+      {
+        label: "Business View",
+        href: "/enterprise",
+        icon: Building2,
+        description: "Core management platforms",
+      },
+    ],
+  },
+  {
     title: "Entities",
     items: [
       {
@@ -60,6 +73,12 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
         href: "/services",
         icon: Server,
         description: "Service registry",
+      },
+      {
+        label: "Microservices",
+        href: "/microservices",
+        icon: Container,
+        description: "Deployment units",
       },
     ],
   },

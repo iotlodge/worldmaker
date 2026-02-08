@@ -28,7 +28,8 @@ def get_trace_engine() -> TraceEngine:
 
 
 def reset_all() -> None:
-    """Reset all singletons (for testing)."""
+    """Reset generated entities; core platforms persist."""
     global _trace_engine
-    reset_store()
-    _trace_engine = None
+    store = get_store()
+    store.clear_layer("generated")
+    _trace_engine = TraceEngine(store=store, rng_seed=42)

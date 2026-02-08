@@ -345,6 +345,56 @@ class InMemoryStore:
 
         return loaded
 
+    # ---- Layer Operations ----
+
+    def clear_layer(self, layer: str) -> dict[str, int]:
+        """Remove all entities matching the given layer. Returns deletion counts.
+
+        Also clears dependencies whose source or target was deleted, and
+        removes traces, spans, and audit log (execution artifacts).
+        """
+        counts: dict[str, int] = {}
+
+        for entity_type in list(self._entities.keys()):
+            to_delete = [
+                eid for eid, entity in self._entities[entity_type].items()
+                if entity.get("layer") == layer
+            ]
+            counts[entity_type] = len(to_delete)
+            for eid in to_delete:
+                del self._entities[entity_type][eid]
+
+        # Filter dependencies — remove edges where source OR target was deleted
+        surviving_ids: set[str] = set()
+        for entities in self._entities.values():
+            surviving_ids.update(entities.keys())
+
+        original_dep_count = len(self._dependencies)
+        self._dependencies = [
+            d for d in self._dependencies
+            if d["source_id"] in surviving_ids and d["target_id"] in surviving_ids
+        ]
+        counts["dependencies"] = original_dep_count - len(self._dependencies)
+
+        self._rebuild_dep_indexes()
+
+        # Clear traces, spans, audit log (execution artifacts)
+        counts["traces"] = len(self._traces)
+        counts["spans"] = len(self._spans)
+        self._traces.clear()
+        self._spans.clear()
+        self._audit_log.clear()
+
+        return counts
+
+    def _rebuild_dep_indexes(self) -> None:
+        """Rebuild dependency source/target indexes after bulk operations."""
+        self._dep_index_source = defaultdict(list)
+        self._dep_index_target = defaultdict(list)
+        for idx, dep in enumerate(self._dependencies):
+            self._dep_index_source[dep["source_id"]].append(idx)
+            self._dep_index_target[dep["target_id"]].append(idx)
+
     # ---- Stats ----
 
     def get_overview(self) -> dict[str, Any]:

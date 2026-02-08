@@ -3,26 +3,27 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
+mkdir -p logs
 
 echo "╔══════════════════════════════════════╗"
 echo "║        WorldMaker Restart            ║"
 echo "╚══════════════════════════════════════╝"
 echo ""
 
-# ── Stop everything ──────────────────────────────────────────────────────
-echo "Stopping all services..."
-pkill -f "next dev" 2>/dev/null || true
-pkill -f "next-server" 2>/dev/null || true
-pkill -f "worldmaker serve" 2>/dev/null || true
-pkill -f "uvicorn.*worldmaker" 2>/dev/null || true
-pkill -f "celery.*worldmaker" 2>/dev/null || true
-docker compose stop worldmaker-api worldmaker-worker 2>/dev/null || true
+# ── Shutdown ─────────────────────────────────────────────────────────────
+echo "Phase 1: Stopping all services..."
+echo ""
+
+# Delegate to shutdown.sh for clean teardown with logging
+"$SCRIPT_DIR/shutdown.sh"
+
+echo ""
+echo "Phase 2: Starting all services..."
+echo ""
+
+# Brief pause to let ports release
 sleep 2
 
-# ── Restart infrastructure ───────────────────────────────────────────────
-echo "Ensuring infrastructure is up..."
-docker compose up -d postgres mongodb neo4j redis kafka zookeeper 2>/dev/null || true
-
-# ── Delegate to start.sh ─────────────────────────────────────────────────
-echo ""
+# ── Startup ──────────────────────────────────────────────────────────────
+# Pass through any flags (--no-infra, --no-frontend, --api-only, --no-browser)
 exec "$SCRIPT_DIR/start.sh" "$@"

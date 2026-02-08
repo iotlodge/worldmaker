@@ -68,10 +68,14 @@ try:
     async def reset_store_endpoint(
         store: InMemoryStore = Depends(get_memory_store),
     ) -> dict[str, Any]:
-        """Clear all data from the store."""
+        """Clear generated data; core platforms persist."""
         from worldmaker.api.deps import reset_all
         reset_all()
-        return {"status": "reset", "message": "All data cleared"}
+        return {
+            "status": "reset",
+            "message": "Generated entities cleared; core platforms preserved",
+            "core_preserved": True,
+        }
 
 except ImportError:
     router = None

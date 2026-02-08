@@ -32,8 +32,18 @@ def create_app(
 
         # Eagerly initialize the in-memory store so first request isn't slow
         from .deps import get_memory_store, get_trace_engine
+        from worldmaker.generators import bootstrap_core
+
         store = get_memory_store()
         engine = get_trace_engine()
+
+        # Bootstrap core management platforms (idempotent)
+        core_result = bootstrap_core(store)
+        if not core_result.get("skipped"):
+            logger.info("Core platforms bootstrapped: %s", core_result)
+        else:
+            logger.debug("Core platforms already present — skipped bootstrap")
+
         entity_count = sum(len(v) for v in store._entities.values())
         logger.info(
             "Store initialized: %d entities, %d traces",

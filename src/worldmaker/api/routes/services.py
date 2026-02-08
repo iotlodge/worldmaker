@@ -134,15 +134,21 @@ try:
     @router.get("/platforms")
     async def list_platforms(
         status: Optional[str] = Query(None),
+        layer: Optional[str] = Query(None, description="Filter by layer: core or generated"),
         limit: int = Query(100, ge=1, le=1000),
         offset: int = Query(0, ge=0),
         store: InMemoryStore = Depends(get_memory_store),
     ) -> dict[str, Any]:
         """List all platforms."""
-        filters = {"status": status} if status else None
-        items = store.get_all("platform", limit=limit, offset=offset, filters=filters)
-        return {"total": store.count("platform", filters=filters), "limit": limit,
-                "offset": offset, "platforms": items}
+        filters: dict[str, Any] = {}
+        if status:
+            filters["status"] = status
+        if layer:
+            filters["layer"] = layer
+        items = store.get_all("platform", limit=limit, offset=offset,
+                              filters=filters if filters else None)
+        return {"total": store.count("platform", filters=filters if filters else None),
+                "limit": limit, "offset": offset, "platforms": items}
 
     @router.get("/platforms/{platform_id}")
     async def get_platform(

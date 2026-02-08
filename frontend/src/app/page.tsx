@@ -16,6 +16,8 @@ import {
   Heart,
   Sparkles,
   Database,
+  Building2,
+  ChevronRight,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -44,6 +46,8 @@ const ENTITY_LINKS: Record<string, string> = {
   services: "/services",
   flows: "/flows",
   dependencies: "/dependencies",
+  capabilities: "/enterprise",
+  microservices: "/microservices",
 };
 
 const BAR_COLORS = [
@@ -156,6 +160,24 @@ export default function DashboardPage() {
           );
         })}
       </div>
+
+      {/* Enterprise quick link */}
+      <Link href="/enterprise">
+        <Card className="border-violet-500/20 bg-violet-500/5 hover:border-violet-500/40 transition-colors cursor-pointer group">
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center">
+              <Building2 className="w-5 h-5 text-violet-500" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-semibold">Enterprise Business View</p>
+              <p className="text-xs text-muted-fg">
+                9 core management platforms — the operational backbone of the enterprise
+              </p>
+            </div>
+            <ChevronRight className="w-4 h-4 text-muted-fg group-hover:text-violet-500 transition-colors" />
+          </div>
+        </Card>
+      </Link>
 
       {/* Charts + Health row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

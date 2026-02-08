@@ -167,6 +167,11 @@ class CapabilityType(str, Enum):
     SECURITY = "security"
 
 
+class LayerType(str, Enum):
+    CORE = "core"
+    GENERATED = "generated"
+
+
 class BusinessProcessType(str, Enum):
     CROSS_PRODUCT = "cross_product"
     INTERNAL = "internal"
@@ -191,6 +196,9 @@ class BaseEntity(BaseModel):
     )
     metadata: dict[str, Any] = Field(
         default_factory=dict, description="Extensible metadata"
+    )
+    layer: str = Field(
+        default="generated", description="Entity layer: core or generated"
     )
 
 

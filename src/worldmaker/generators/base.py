@@ -130,4 +130,5 @@ class BaseGenerator:
             "created_at": self._random_datetime(365),
             "updated_at": self._random_datetime(30),
             "metadata": {},
+            "layer": "generated",
         }

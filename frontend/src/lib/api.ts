@@ -152,7 +152,7 @@ export const features = {
 // ── Platforms ────────────────────────────────────────────────────────────
 
 export const platforms = {
-  list: (params?: { limit?: number; offset?: number }) =>
+  list: (params?: { limit?: number; offset?: number; layer?: string }) =>
     get<PlatformListResponse>(`/platforms${buildQueryString(params ?? {})}`),
   get: (id: string) => get<Platform>(`/platforms/${id}`),
   create: (data: Partial<Platform>) => post<Platform>("/platforms", data),

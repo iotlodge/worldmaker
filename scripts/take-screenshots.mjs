@@ -39,6 +39,25 @@ async function main() {
   await page.waitForTimeout(1500);
   await shot('dashboard', { fullPage: true });
 
+  // 1b. Enterprise Business View
+  console.log('Enterprise Business View...');
+  await page.goto(`${BASE}/enterprise`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(1500);
+  await shot('enterprise', { fullPage: true });
+
+  // 1c. Enterprise Platform Detail (click first platform card)
+  console.log('Enterprise Platform Detail...');
+  const firstPlatformCard = page.locator('a[href^="/enterprise/"]').first();
+  await firstPlatformCard.click();
+  await page.waitForTimeout(1500);
+  await shot('enterprise-detail', { fullPage: true });
+
+  // 1d. Microservices
+  console.log('Microservices...');
+  await page.goto(`${BASE}/microservices`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(1000);
+  await shot('microservices');
+
   // 2. Risk Surface
   console.log('Risk Surface...');
   await page.goto(`${BASE}/risk-surface`, { waitUntil: 'networkidle' });

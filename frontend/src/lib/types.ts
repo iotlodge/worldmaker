@@ -70,6 +70,8 @@ export type CapabilityType =
 
 export type HealthStatus = "healthy" | "degraded" | "unhealthy" | "unknown";
 
+export type Layer = "core" | "generated";
+
 // ── Base Entity ──────────────────────────────────────────────────────────
 
 export interface BaseEntity {
@@ -77,6 +79,7 @@ export interface BaseEntity {
   created_at: string; // ISO 8601
   updated_at: string; // ISO 8601
   metadata: Record<string, unknown>;
+  layer?: Layer;
 }
 
 // ── Domain Entities ──────────────────────────────────────────────────────

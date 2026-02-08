@@ -222,17 +222,20 @@ const API_GROUPS: EndpointGroup[] = [
     title: "Platforms",
     icon: Layers,
     description:
-      "Platform management. Platforms own Capabilities and define the infrastructure interoperability domain.",
+      "Platform management. Platforms own Capabilities and define the infrastructure interoperability domain. 9 core management platforms bootstrap at startup.",
     endpoints: [
       {
         method: "GET",
         path: "/platforms",
-        description: "List all platforms with optional status filter.",
+        description: "List all platforms with optional status and layer filtering.",
         params: [
           { name: "status", type: "string", required: false, description: "Filter by status" },
+          { name: "layer", type: "string", required: false, description: 'Filter by layer: "core" or "generated"' },
           { name: "limit", type: "int", required: false, description: "Max results (default: 100)" },
           { name: "offset", type: "int", required: false, description: "Pagination offset" },
         ],
+        notes:
+          "Core platforms (layer=core) are bootstrapped at startup and persist across resets. Generated platforms (layer=generated) are created by the generator.",
       },
       {
         method: "GET",
@@ -573,7 +576,9 @@ const API_GROUPS: EndpointGroup[] = [
       {
         method: "POST",
         path: "/generate/reset",
-        description: "Clear all data from the store.",
+        description: "Clear generated entities from the store. Core management platforms persist.",
+        notes:
+          "Only removes entities with layer=generated. The 9 core management platforms, their capabilities, and services survive the reset. Response includes core_preserved: true.",
       },
     ],
   },
@@ -655,6 +660,12 @@ export default function ApiReferencePage() {
             </div>
           </div>
           <div className="mt-3 pt-3 border-t border-card-border/50 text-xs text-muted-fg space-y-1">
+            <p>
+              <span className="font-medium text-foreground">Layers</span>{" "}
+              — All entities have a <code className="text-xs bg-muted/20 px-1 rounded">layer</code> field:{" "}
+              <code className="text-xs bg-emerald-500/10 text-emerald-500 px-1 rounded">core</code> (9 management platforms bootstrapped at startup, survive resets) or{" "}
+              <code className="text-xs bg-blue-500/10 text-blue-500 px-1 rounded">generated</code> (created by the generator, cleared on reset).
+            </p>
             <p>
               <span className="font-medium text-foreground">Flows</span> connect
               services through steps, generating OTel traces when executed.
