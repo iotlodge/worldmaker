@@ -17,6 +17,7 @@ import {
   AlertOctagon,
   BookOpen,
   Building2,
+  Tags,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -115,6 +116,12 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
         icon: Activity,
         description: "Traces & spans",
       },
+      {
+        label: "Attributes",
+        href: "/attributes",
+        icon: Tags,
+        description: "Attribute registry & gaps",
+      },
     ],
   },
   {
@@ -148,12 +155,12 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        "flex flex-col h-screen bg-sidebar-bg text-sidebar-fg border-r border-sidebar-bg/50 transition-all duration-200",
+        "flex flex-col h-screen bg-sidebar-bg text-sidebar-fg border-r border-sidebar-border transition-all duration-200",
         collapsed ? "w-16" : "w-60"
       )}
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 px-4 h-14 border-b border-white/10">
+      <div className="flex items-center gap-3 px-4 h-14 border-b border-sidebar-border">
         <div className="w-8 h-8 rounded-lg bg-sidebar-accent flex items-center justify-center text-white font-bold text-sm shrink-0">
           W
         </div>
@@ -169,7 +176,7 @@ export function Sidebar() {
         <div className="px-3 py-3">
           <Link
             href="/search"
-            className="flex items-center gap-2 px-3 py-2 text-xs text-sidebar-muted rounded-md bg-white/5 hover:bg-white/10 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 text-xs text-sidebar-muted rounded-md bg-sidebar-fg/5 hover:bg-sidebar-fg/10 transition-colors"
           >
             <Search className="w-3.5 h-3.5" />
             <span>Search ecosystem...</span>
@@ -198,7 +205,7 @@ export function Sidebar() {
                         "flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors",
                         active
                           ? "bg-sidebar-accent/15 text-sidebar-accent font-medium"
-                          : "text-sidebar-fg/70 hover:bg-white/5 hover:text-sidebar-fg"
+                          : "text-sidebar-fg/70 hover:bg-sidebar-fg/5 hover:text-sidebar-fg"
                       )}
                       title={collapsed ? item.label : undefined}
                     >
@@ -221,7 +228,7 @@ export function Sidebar() {
       {/* Collapse toggle */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="flex items-center justify-center h-10 border-t border-white/10 text-sidebar-muted hover:text-sidebar-fg transition-colors"
+        className="flex items-center justify-center h-10 border-t border-sidebar-border text-sidebar-muted hover:text-sidebar-fg transition-colors"
         title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
       >
         {collapsed ? (

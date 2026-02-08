@@ -261,7 +261,16 @@ try:
         data: dict[str, Any] = Body(...),
         store: InMemoryStore = Depends(get_memory_store),
     ) -> dict[str, Any]:
-        """Create a new service."""
+        """Create a new service with auto-enriched default attributes."""
+        # Auto-populate default attribute values from attribute definitions
+        metadata = data.get("metadata", {})
+        all_attrs = store.get_all("attribute_definition", limit=1000)
+        for attr in all_attrs:
+            if "service" in attr.get("applies_to", []) and attr.get("default_value") is not None:
+                attr_name = attr["name"]
+                if attr_name not in metadata:
+                    metadata[attr_name] = attr["default_value"]
+        data["metadata"] = metadata
         return store.create("service", data)
 
     @router.put("/services/{service_id}")
@@ -353,8 +362,30 @@ try:
         data: dict[str, Any] = Body(...),
         store: InMemoryStore = Depends(get_memory_store),
     ) -> dict[str, Any]:
-        """Create a new microservice."""
-        return store.create("microservice", data)
+        """Create a new microservice with auto-enriched attributes and code repo."""
+        # Auto-populate default attribute values
+        metadata = data.get("metadata", {})
+        all_attrs = store.get_all("attribute_definition", limit=1000)
+        for attr in all_attrs:
+            if "microservice" in attr.get("applies_to", []) and attr.get("default_value") is not None:
+                attr_name = attr["name"]
+                if attr_name not in metadata:
+                    metadata[attr_name] = attr["default_value"]
+        data["metadata"] = metadata
+
+        ms = store.create("microservice", data)
+
+        # Auto-scaffold code repo
+        try:
+            from worldmaker.api.deps import get_code_repo_manager
+            code_mgr = get_code_repo_manager()
+            manifest = code_mgr.scaffold(ms)
+            ms["repo_url"] = manifest.get("repo_path", "")
+            store.update("microservice", str(ms["id"]), {"repo_url": ms["repo_url"]})
+        except Exception:
+            pass  # Non-fatal — code scaffolding is optional
+
+        return ms
 
     @router.get("/microservices/{ms_id}")
     async def get_microservice(

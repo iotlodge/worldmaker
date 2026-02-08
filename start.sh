@@ -5,6 +5,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 mkdir -p logs
 
+# Zero out logs on each startup for clean debugging
+for f in logs/*.log; do
+  [ -f "$f" ] && : > "$f"
+done
+
 # ── Parse flags ──────────────────────────────────────────────────────────
 NO_INFRA=false
 NO_FRONTEND=false
@@ -149,8 +154,11 @@ if ! $NO_FRONTEND; then
       echo "         Installing frontend dependencies..."
       (cd "$SCRIPT_DIR/frontend" && npm install --silent) >> logs/frontend.log 2>&1 || true
     fi
-    # Start dev server in background
-    nohup npm --prefix "$SCRIPT_DIR/frontend" run dev \
+    # Start dev server in background.
+    # IMPORTANT: Must cd into frontend/ so that process.cwd() points to
+    # frontend/, not worldmaker/. Without this, Next.js infers the wrong
+    # workspace root and CSS module resolution (tailwindcss) fails.
+    nohup bash -c "cd '$SCRIPT_DIR/frontend' && npm run dev" \
       >> logs/frontend.log 2>> logs/frontend-error.log &
     FRONTEND_PID=$!
     echo "         PID: $FRONTEND_PID"

@@ -37,6 +37,12 @@ import type {
   AuditLogResponse,
   StoreStatus,
   SearchResult,
+  AttributeDefinition,
+  AttributeDefinitionListResponse,
+  GapAnalysisResponse,
+  EntityAttributesResponse,
+  CodeManifest,
+  CodeFileResponse,
 } from "./types";
 
 // ── Config ───────────────────────────────────────────────────────────────
@@ -272,6 +278,41 @@ export const generator = {
   reset: () => post<{ status: string }>("/generate/reset"),
 };
 
+// ── Attributes ──────────────────────────────────────────────────────────
+
+export const attributes = {
+  list: (params?: { tier?: string; category?: string; applies_to?: string; limit?: number; offset?: number }) =>
+    get<AttributeDefinitionListResponse>(`/attributes${buildQueryString(params ?? {})}`),
+  get: (id: string) => get<AttributeDefinition>(`/attributes/${id}`),
+  create: (data: Partial<AttributeDefinition>) =>
+    post<AttributeDefinition>("/attributes", data),
+  update: (id: string, data: Partial<AttributeDefinition>) =>
+    put<AttributeDefinition>(`/attributes/${id}`, data),
+  delete: (id: string) => del(`/attributes/${id}`),
+  gaps: (params?: { entity_type?: string; tier?: string; limit?: number }) =>
+    get<GapAnalysisResponse>(`/attributes/gaps${buildQueryString(params ?? {})}`),
+  stamp: (data: {
+    entity_type: string;
+    entity_id: string;
+    attribute_name: string;
+    value: unknown;
+    stamped_by?: string;
+  }) => post("/attributes/stamp", data),
+  forEntity: (entityType: string, entityId: string) =>
+    get<EntityAttributesResponse>(`/entities/${entityType}/${entityId}/attributes`),
+};
+
+// ── Code Generation ─────────────────────────────────────────────────────
+
+export const codegen = {
+  manifest: (msId: string) => get<CodeManifest>(`/microservices/${msId}/code`),
+  file: (msId: string, filename: string) =>
+    get<CodeFileResponse>(`/microservices/${msId}/code/${filename}`),
+  scaffold: (msId: string) =>
+    post<{ status: string; manifest: CodeManifest }>(`/microservices/${msId}/code/scaffold`),
+  deleteRepo: (msId: string) => del(`/microservices/${msId}/code`),
+};
+
 // ── Aggregate export ─────────────────────────────────────────────────────
 
 const api = {
@@ -287,6 +328,8 @@ const api = {
   traces,
   dependencies,
   generator,
+  attributes,
+  codegen,
 };
 
 export default api;

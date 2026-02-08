@@ -32,6 +32,9 @@ class Settings(BaseSettings):
     # Generator
     GENERATOR_SEED: int = 42
 
+    # Code Repository
+    CODE_REPO_PATH: str = "repos"  # Relative to project root, or absolute path
+
     class Config:
         env_prefix = "WM_"
         case_sensitive = True

@@ -6,10 +6,11 @@
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;
-  --sidebar-bg: #0f172a;
-  --sidebar-fg: #e2e8f0;
+  --sidebar-bg: #f1f5f9;
+  --sidebar-fg: #1e293b;
   --sidebar-accent: #3b82f6;
   --sidebar-muted: #64748b;
+  --sidebar-border: #e2e8f0;
   --card-bg: #ffffff;
   --card-border: #e2e8f0;
   --muted: #f1f5f9;
@@ -27,6 +28,7 @@
   --color-sidebar-fg: var(--sidebar-fg);
   --color-sidebar-accent: var(--sidebar-accent);
   --color-sidebar-muted: var(--sidebar-muted);
+  --color-sidebar-border: var(--sidebar-border);
   --color-card-bg: var(--card-bg);
   --color-card-border: var(--card-border);
   --color-muted: var(--muted);
@@ -45,6 +47,7 @@
   --foreground: #e2e8f0;
   --sidebar-bg: #0c1222;
   --sidebar-fg: #cbd5e1;
+  --sidebar-border: #1e293b;
   --card-bg: #0f172a;
   --card-border: #1e293b;
   --muted: #1e293b;

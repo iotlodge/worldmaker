@@ -221,9 +221,9 @@ export default function ServiceDetailPage() {
                   <div className="space-y-1">
                     {deps.data.blast_radius.affected_services
                       .slice(0, 10)
-                      .map((svc) => (
+                      .map((svc, idx) => (
                         <div
-                          key={svc.id}
+                          key={`${svc.id}-${idx}`}
                           className="flex items-center justify-between text-sm py-1 border-b border-card-border last:border-0"
                         >
                           <Link

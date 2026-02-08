@@ -48,6 +48,7 @@ const ENTITY_LINKS: Record<string, string> = {
   dependencies: "/dependencies",
   capabilities: "/enterprise",
   microservices: "/microservices",
+  attribute_definitions: "/attributes",
 };
 
 const BAR_COLORS = [

@@ -479,6 +479,90 @@ export interface StoreStatus {
   span_count: number;
 }
 
+// ── Attribute Registry Types ─────────────────────────────────────────────
+
+export type AttributeTier = "core" | "lifecycle" | "function";
+
+export interface AttributeDefinition extends BaseEntity {
+  name: string;
+  display_name: string;
+  tier: AttributeTier;
+  data_type: string;
+  description: string;
+  applies_to: string[];
+  required: boolean;
+  default_value: unknown;
+  enum_values: string[];
+  owner_platform: string | null;
+  category: string;
+}
+
+export interface AttributeDefinitionListResponse {
+  total: number;
+  limit: number;
+  offset: number;
+  attribute_definitions: AttributeDefinition[];
+}
+
+export interface AttributeGap {
+  entity_id: string;
+  entity_type: string;
+  entity_name: string;
+  missing_attributes: Array<{
+    name: string;
+    display_name: string;
+    tier: AttributeTier;
+    required: boolean;
+  }>;
+  gap_count: number;
+  risk_score: number;
+}
+
+export interface GapAnalysisResponse {
+  total_entities: number;
+  entities_with_gaps: number;
+  total_gaps: number;
+  gaps: AttributeGap[];
+}
+
+export interface EntityAttributesResponse {
+  entity_type: string;
+  entity_id: string;
+  entity_name: string;
+  total_applicable: number;
+  total_populated: number;
+  attributes: Array<{
+    name: string;
+    display_name: string;
+    tier: AttributeTier;
+    data_type: string;
+    required: boolean;
+    value: unknown;
+    has_value: boolean;
+    stamped_by: string | null;
+    stamped_at: string | null;
+    category: string;
+  }>;
+}
+
+// ── Code Repository Types ───────────────────────────────────────────────
+
+export interface CodeManifest {
+  microservice_id: string;
+  microservice_name: string;
+  language: string;
+  framework: string;
+  files: Array<{ name: string; size: number; path: string }>;
+  repo_path: string;
+}
+
+export interface CodeFileResponse {
+  microservice_id: string;
+  filename: string;
+  content: string;
+  size: number;
+}
+
 // ── Search ───────────────────────────────────────────────────────────────
 
 export interface SearchResult {

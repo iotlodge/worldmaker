@@ -32,7 +32,7 @@ def create_app(
 
         # Eagerly initialize the in-memory store so first request isn't slow
         from .deps import get_memory_store, get_trace_engine
-        from worldmaker.generators import bootstrap_core
+        from worldmaker.generators import bootstrap_core, bootstrap_core_attributes
 
         store = get_memory_store()
         engine = get_trace_engine()
@@ -43,6 +43,13 @@ def create_app(
             logger.info("Core platforms bootstrapped: %s", core_result)
         else:
             logger.debug("Core platforms already present — skipped bootstrap")
+
+        # Bootstrap core attribute definitions (idempotent)
+        attr_result = bootstrap_core_attributes(store)
+        if not attr_result.get("skipped"):
+            logger.info("Core attributes bootstrapped: %s", attr_result)
+        else:
+            logger.debug("Core attributes already present — skipped bootstrap")
 
         entity_count = sum(len(v) for v in store._entities.values())
         logger.info(
@@ -82,7 +89,7 @@ def create_app(
     )
 
     # Register routes
-    from .routes import ecosystem, services, flows, dependencies, generators, health
+    from .routes import ecosystem, services, flows, dependencies, generators, health, codegen, attributes
     if health.router:
         app.include_router(health.router, prefix="/api/v1", tags=["health"])
     if ecosystem.router:
@@ -100,6 +107,12 @@ def create_app(
     if generators.router:
         app.include_router(generators.router, prefix="/api/v1",
                            tags=["generators"])
+    if codegen.router:
+        app.include_router(codegen.router, prefix="/api/v1",
+                           tags=["codegen"])
+    if attributes.router:
+        app.include_router(attributes.router, prefix="/api/v1",
+                           tags=["attributes"])
 
     return app
 

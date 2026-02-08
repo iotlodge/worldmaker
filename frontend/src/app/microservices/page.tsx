@@ -102,16 +102,12 @@ export default function MicroservicesPage() {
                       </Link>
                     )}
                   </div>
-                  {ms.repo_url && (
-                    <a
-                      href={ms.repo_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-accent hover:underline"
-                    >
-                      repo
-                    </a>
-                  )}
+                  <Link
+                    href={`/microservices/${ms.id}/code`}
+                    className="text-xs text-accent hover:underline"
+                  >
+                    repo
+                  </Link>
                 </div>
               </div>
             </Card>

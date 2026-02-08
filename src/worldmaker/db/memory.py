@@ -319,6 +319,7 @@ class InMemoryStore:
             ("deployments", "deployment"),
             ("data_stores", "data_store"),
             ("event_types", "event_type"),
+            ("attribute_definitions", "attribute_definition"),
             ("criticality_ratings", "criticality_rating"),
             ("slo_definitions", "slo_definition"),
             ("failure_modes", "failure_mode"),

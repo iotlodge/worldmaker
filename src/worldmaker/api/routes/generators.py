@@ -5,7 +5,7 @@ try:
     from fastapi import APIRouter, Depends, Query
     from typing import Any
 
-    from worldmaker.api.deps import get_memory_store, get_trace_engine
+    from worldmaker.api.deps import get_memory_store, get_trace_engine, get_code_repo_manager
     from worldmaker.db.memory import InMemoryStore
     from worldmaker.engine.trace import TraceEngine
     from worldmaker.generators.ecosystem import generate_ecosystem
@@ -30,12 +30,24 @@ try:
         ecosystem = generate_ecosystem(seed=seed, size=size)
         loaded = store.load_ecosystem(ecosystem)
 
+        # Scaffold code repos for generated microservices
+        try:
+            code_mgr = get_code_repo_manager()
+            ms_list = ecosystem.get("microservices", [])
+            if ms_list:
+                code_result = code_mgr.scaffold_batch(ms_list)
+            else:
+                code_result = {"scaffolded": 0}
+        except Exception:
+            code_result = {"scaffolded": 0, "error": "codegen unavailable"}
+
         result: dict[str, Any] = {
             "status": "completed",
             "seed": seed,
             "size": size,
             "summary": ecosystem.get("summary", {}),
             "loaded": loaded,
+            "code_repos": code_result.get("scaffolded", 0),
         }
 
         if execute_flows:

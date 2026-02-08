@@ -88,7 +88,20 @@ if HAS_CLICK:
 
         click.echo(f"Starting WorldMaker API on {host}:{port}...")
         if do_reload:
-            uvicorn.run("worldmaker.api.app:app", host=host, port=port, reload=True)
+            # IMPORTANT: Only watch the src/ tree for reloads.
+            # The default watches the entire cwd, which includes repos/
+            # and logs/. When code scaffolding writes files to repos/,
+            # uvicorn detects the change and restarts — wiping the
+            # in-memory store and all generated data.
+            import pathlib
+            src_dir = str(pathlib.Path(__file__).resolve().parents[2])  # src/worldmaker/../../ => src/
+            uvicorn.run(
+                "worldmaker.api.app:app",
+                host=host,
+                port=port,
+                reload=True,
+                reload_dirs=[src_dir],
+            )
         else:
             from ..api.app import create_app
             app = create_app()

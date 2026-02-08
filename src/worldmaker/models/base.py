@@ -32,6 +32,7 @@ class EntityType(str, Enum):
     DATA_STORE = "data_store"
     DATA_STORE_INSTANCE = "data_store_instance"
     DEPENDENCY = "dependency"
+    ATTRIBUTE_DEFINITION = "attribute_definition"
 
 
 class DependencyType(str, Enum):
@@ -170,6 +171,12 @@ class CapabilityType(str, Enum):
 class LayerType(str, Enum):
     CORE = "core"
     GENERATED = "generated"
+
+
+class AttributeTier(str, Enum):
+    CORE = "core"           # Required for AI intelligence
+    LIFECYCLE = "lifecycle"  # Stamped by core functions during workflows
+    FUNCTION = "function"    # Extensible, added by platform owners at runtime
 
 
 class BusinessProcessType(str, Enum):
